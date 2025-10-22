@@ -1,0 +1,397 @@
+return {
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        version = "*",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        },
+        lazy = false,
+        keys = {
+            { "<leader>e", "<cmd>Neotree toggle<CR>", desc = "Toggle NeoTree" },
+            { "<leader>o", "<cmd>Neotree focus<CR>", desc = "Focus NeoTree" },
+            { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
+        },
+        opts = {
+            filesystem = {
+                follow_current_file = true,
+                use_libuv_file_watcher = true,
+                filtered_items = {
+                    hide_dotfiles = false,
+                    hide_gitignored = false,
+                    hide_by_name = {},
+                    never_show = {},
+                    hide_by_name = {
+                        "node_modules",
+                        ".turbo",
+                        "dist",
+                        ".git",
+                        ".yarn",
+                        ".yarnrc",
+                        ".yarnrc.yml",
+                        ".editorconfig",
+                    },
+                },
+                window = {
+                    mappings = {
+                        ["\\"] = "close_window",
+                    },
+                },
+            },
+        },
+    },
+
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        cmd = "Telescope",
+        keys = {
+            {
+                "<leader>ff",
+                function()
+                    require("telescope.builtin").find_files()
+                end,
+                desc = "[ F ]ind files",
+            },
+            {
+                "<leader>fF",
+                function()
+                    require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
+                end,
+                desc = "[ F ]ind [ F ]iles",
+            },
+
+            {
+                "<leader>lg",
+                function()
+                    require("telescope.builtin").live_grep()
+                end,
+                desc = "Live grep",
+            },
+            {
+                "<leader>gf",
+                function()
+                    require("telescope.builtin").git_files()
+                end,
+                desc = "Live grep",
+            },
+
+            {
+                "<leader>fc",
+                function()
+                    require("telescope.builtin").git_commits()
+                end,
+                desc = "Git Commits",
+            },
+
+            {
+                "<leader>of",
+                function()
+                    require("telescope.builtin").oldfiles()
+                end,
+                desc = "[ O ]ld [ F ]iles",
+            },
+
+            {
+                "<leader>ds",
+                function()
+                    require("telescope.builtin").lsp_document_symbols()
+                end,
+                desc = "[ D ]ocument [ S ]ymbols",
+            },
+
+            {
+                "<leader>wss",
+                function()
+                    require("telescope.builtin").lsp_dynamic_workspace_symbols()
+                end,
+                desc = "[ W ]orkspace [ S ]ymbol[ s ]",
+                remap = true,
+            },
+
+            {
+                "<leader>lr",
+                function()
+                    require("telescope.builtin").lsp_references()
+                end,
+                desc = "[L]ist [R]erefrences",
+            },
+            {
+                "<leader>ld",
+                function()
+                    require("telescope.builtin").diagnostics()
+                end,
+                desc = "[ L ]ist [ D ]iagnostics",
+            },
+            {
+                "<leader>li",
+                function()
+                    require("telescope.builtin").lsp_implementations()
+                end,
+                desc = "[ L ]ist [ I ]mplementation",
+            },
+            {
+                "<leader>ldi",
+                function()
+                    require("telescope.builtin").lsp_definitions()
+                end,
+                desc = "[ L ]ist [ D ]ef[ i ]nitions",
+            },
+        },
+        opts = {
+            defaults = {
+                prompt_prefix = "",
+                selection_caret = "",
+                sorting_strategy = "ascending",
+                path_display = {
+                    "smart",
+                },
+                layout_config = {
+                    horizontal = {
+                        prompt_position = "top",
+                        width = 0.75,
+                        height = 0.65,
+                        preview_width = 0.6,
+                    },
+                },
+                mappings = {
+                    i = {
+                        ["<C-k>"] = function(...)
+                            require("telescope.actions").move_selection_previous(...)
+                        end,
+                        ["<C-j>"] = function(...)
+                            require("telescope.actions").move_selection_next(...)
+                        end,
+                        ["<c-t>"] = function(...)
+                            require("trouble.providers.telescope").open_with_trouble(...)
+                        end,
+                    },
+                    n = {
+                        q = function(...)
+                            require("telescope.actions").close(...)
+                        end,
+                        ["<c-t>"] = function(...)
+                            require("trouble.providers.telescope").open_with_trouble(...)
+                        end,
+                    },
+                },
+            },
+        },
+    },
+
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        vscode = true,
+        keys = {
+            {
+                "s",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").jump()
+                end,
+                desc = "Flash",
+            },
+            {
+                "S",
+                mode = { "n", "o", "x" },
+                function()
+                    require("flash").treesitter()
+                end,
+                desc = "Flash Treesitter",
+            },
+            {
+                "r",
+                mode = "o",
+                function()
+                    require("flash").remote()
+                end,
+                desc = "Remote Flash",
+            },
+            {
+                "R",
+                mode = { "o", "x" },
+                function()
+                    require("flash").treesitter_search()
+                end,
+                desc = "Treesitter Search",
+            },
+            {
+                "<c-s>",
+                mode = { "c" },
+                function()
+                    require("flash").toggle()
+                end,
+                desc = "Toggle Flash Search",
+            },
+        },
+    },
+
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {
+            plugins = {
+                spelling = true,
+            },
+        },
+    },
+
+    {
+        "lewis6991/gitsigns.nvim",
+        event = {
+            "BufReadPre",
+            "BufNewFile",
+        },
+        opts = {
+            signs = {
+                add = { text = "▎" },
+                change = { text = "▎" },
+                delete = { text = "" },
+                topdelete = { text = "" },
+                changedelete = { text = "▎" },
+                untracked = { text = "▎" },
+            },
+        },
+    },
+
+    {
+        "RRethy/vim-illuminate",
+        event = {
+            "BufReadPost",
+            "BufNewFile",
+        },
+        opts = {
+            delay = 200,
+        },
+        config = function(_, opts)
+            require("illuminate").configure(opts)
+        end,
+        keys = {
+            { "]]", desc = "Next Reference" },
+            { "[[", desc = "Prev Reference" },
+        },
+    },
+
+    {
+        "echasnovski/mini.bufremove",
+        -- stylua: ignore
+        keys = {
+            { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
+            { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+        },
+    },
+
+    {
+        "folke/trouble.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        keys = {
+            { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
+            { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
+            { "<leader>xl", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
+            { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
+        },
+        opts = {},
+    },
+
+    {
+        "kdheepak/lazygit.nvim",
+        dependencies = {
+            "nvim-telescope/telescope.nvim",
+            "nvim-lua/plenary.nvim",
+        },
+        keys = {
+            {
+                "<leader>gg",
+                function()
+                    require("lazygit").lazygit()
+                end,
+                desc = "Lazygit",
+            },
+        },
+        config = function()
+            require("telescope").load_extension("lazygit")
+        end,
+    },
+
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
+        opts = {
+            -- you can enable a preset for easier configuration
+            presets = {
+                bottom_search = true, -- use a classic bottom cmdline for search
+                command_palette = true, -- position the cmdline and popupmenu together
+                long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = true, -- add a border to hover docs and signature help
+            },
+            routes = {
+                {
+                    filter = {
+                        event = "msg_show",
+                        kind = "",
+                        find = "written",
+                    },
+                    opts = { skip = true },
+                },
+            },
+            views = {
+                cmdline_popup = {
+                    position = {
+                        row = 5,
+                        col = "50%",
+                    },
+                    size = {
+                        width = 60,
+                        height = "auto",
+                    },
+                },
+                popupmenu = {
+                    relative = "editor",
+                    position = {
+                        row = 8,
+                        col = "50%",
+                    },
+                    size = {
+                        width = 60,
+                        height = 10,
+                    },
+                    border = {
+                        style = "rounded",
+                        padding = { 0, 1 },
+                    },
+                    win_options = {
+                        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+                    },
+                },
+            },
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+        },
+    },
+
+    {
+        "psliwka/vim-smoothie",
+    },
+
+    {
+        "mrjones2014/smart-splits.nvim",
+        opts = {},
+    },
+}
