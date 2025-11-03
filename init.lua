@@ -2,6 +2,8 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 require("config.format")
+require("config.icons")
+require("config.user-commands")
 require("config.lazy")
 
 require("notify").setup({

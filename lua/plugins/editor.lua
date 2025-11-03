@@ -279,20 +279,25 @@ return {
 
     {
         "RRethy/vim-illuminate",
-        event = {
-            "BufReadPost",
-            "BufNewFile",
-        },
-        opts = {
-            delay = 200,
-        },
-        config = function(_, opts)
-            require("illuminate").configure(opts)
+        config = function()
+            -- patch for nvim-treesitter parent() crash
+            local ok, locals = pcall(require, "nvim-treesitter.locals")
+            if ok and locals then
+                local old_get_scope_tree = locals.get_scope_tree
+                locals.get_scope_tree = function(node, lang)
+                    if not node or not node.parent then
+                        return {}
+                    end
+                    return old_get_scope_tree(node, lang)
+                end
+            end
+
+            require("illuminate").configure({
+                providers = { "lsp", "regex" }, -- disable treesitter provider
+                delay = 100,
+                filetypes_denylist = { "NvimTree", "lazy", "help" },
+            })
         end,
-        keys = {
-            { "]]", desc = "Next Reference" },
-            { "[[", desc = "Prev Reference" },
-        },
     },
 
     {

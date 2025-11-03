@@ -8,6 +8,11 @@ map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
 
+map("v", "<Tab>", ">gv", { desc = "Indent selection and keep it selected" })
+map("v", "<S-Tab>", "<gv", { desc = "Unindent selection and keep it selected" })
+vim.keymap.set("n", "<leader>rr", ":Restart<CR>", { desc = "Restart Neovim" })
+vim.keymap.set("n", "<leader>rr", ":Restart<CR>", { desc = "Restart Neovim" })
+
 -- Move to window using the <ctrl> hjkl keys
 map("n", "<C-h>", function()
     require("smart-splits").move_cursor_left()
