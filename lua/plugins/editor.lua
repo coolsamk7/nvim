@@ -1,5 +1,24 @@
 return {
     {
+        "kosayoda/nvim-lightbulb",
+        dependencies = "antoinemadec/FixCursorHold.nvim",
+        opts = {
+            autocmd = {
+                enabled = true,
+            },
+            sign = {
+                enabled = true,
+                priority = 10,
+            },
+            virtual_text = {
+                enabled = false,
+            },
+            status_text = {
+                enabled = false,
+            },
+        },
+    },
+    {
         "nvim-neo-tree/neo-tree.nvim",
         version = "*",
         dependencies = {

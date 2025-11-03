@@ -1,13 +1,13 @@
 return {
     {
-       "williamboman/mason.nvim",
+        "williamboman/mason.nvim",
         opts = {
             ensure_installed = {
-            "stylua",
-            "prettierd",
-            "eslint_d",
-            "lua-language-server",
-            "typescript-language-server",
+                "stylua",
+                "prettierd",
+                "eslint_d",
+                "lua-language-server",
+                "typescript-language-server",
             },
         },
     },
@@ -83,7 +83,16 @@ return {
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
         config = function()
-            require("typescript-tools").setup({})
+            require("typescript-tools").setup({
+                on_attach = function(client, bufnr) end,
+                settings = {
+                    tsserver_max_memory = 4096,
+                    tsserver_file_preferences = {
+                        includeInlayParameterNameHints = "all",
+                        includeInlayVariableTypeHints = true,
+                    },
+                },
+            })
 
             vim.keymap.set(
                 "n",
